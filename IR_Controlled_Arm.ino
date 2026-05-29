@@ -60,7 +60,8 @@ unsigned long lastSignalTime = 0;
 unsigned long lastServoUpdate = 0;
 
 // --- Helpers ---
-void stopAll() {
+void stopAll() 
+{
   for (int i = 0; i < 4; i++) digitalWrite(motorPins[i], LOW);
   motorDirection = 0;   motorRunning = false;
   servo1Direction = 0;  servo1Running = false;
@@ -68,7 +69,8 @@ void stopAll() {
   // Grabber state intentionally preserved — it's toggle-based, not hold-based
 }
 
-void setup() {
+void setup() 
+{
   Serial.begin(9600);
   myStepper.setSpeed(rolePerMinute);
   for (int i = 0; i < 4; i++) pinMode(motorPins[i], OUTPUT);
@@ -85,18 +87,25 @@ void setup() {
   IrReceiver.begin(IR_RECEIVE_PIN);
 }
 
-void loop() {
+void loop() 
+{
   // 1. IR Detection
-  if (IrReceiver.decode()) {
-    if (IrReceiver.decodedIRData.flags & IRDATA_FLAGS_IS_REPEAT) {
+  if (IrReceiver.decode()) 
+  {
+    if (IrReceiver.decodedIRData.flags & IRDATA_FLAGS_IS_REPEAT) 
+    {
       // Held button — keep the timeout window alive
       // Grabber toggle deliberately excluded: repeats should not re-toggle it
       lastSignalTime = millis();
-    } else {
+    } 
+    else 
+    {
       int command = IrReceiver.decodedIRData.command;
-      if (command != 0) {
+      if (command != 0) 
+      {
         lastSignalTime = millis();
-        switch (command) {
+        switch (command) 
+        {
 
           case IR_BUTTON_FF:
             motorDirection = 1;    motorRunning = true;
@@ -152,16 +161,19 @@ void loop() {
   }
 
   // 3. Execution
-  if (motorRunning) {
+  if (motorRunning) 
+  {
     myStepper.step(motorDirection * STEPS_PER_TICK);
   }
 
   if ((servo1Running || servo2Running) && (millis() - lastServoUpdate >= SERVO_UPDATE_MS)) {
-    if (servo1Running) {
+    if (servo1Running) 
+    {
       int nextPos = constrain(servo1Pos + (servo1Direction * SERVO_SPEED), 0, 180);
       if (nextPos != servo1Pos) { servo1Pos = nextPos; servo1.write(servo1Pos); }
     }
-    if (servo2Running) {
+    if (servo2Running) 
+    {
       int nextPos = constrain(servo2Pos + (servo2Direction * SERVO_SPEED), 0, 180);
       if (nextPos != servo2Pos) { servo2Pos = nextPos; servo2.write(servo2Pos); }
     }
