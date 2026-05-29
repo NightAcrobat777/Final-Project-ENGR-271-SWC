@@ -1,6 +1,6 @@
 # ENGR 271 Final Project
 
-**Group Members:** Gabriel Martinez, Art Leyva, Aydan Sieto
+**Group Members:** Aydan Sieto, Gabriel Martinez, Art Leyva
 
 ---
 
